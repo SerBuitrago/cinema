@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import com.cinema.application.repository.MovieRepository;
 import com.cinema.dominio.Movie;
 import com.cinema.infrastructure.persistence.mapper.MovieEntityMapper;
-import com.cinema.infrastructure.rest.mapper.MovieMapper;
 
 import lombok.RequiredArgsConstructor;
 
