@@ -1,9 +1,9 @@
-package com.cinema.infrastructure.model;
+package com.cinema.infrastructure.tmdb.model;
 
 import lombok.Data;
 
 @Data
-public class RatingModel {
+public class RatingTMDb {
 	
 	private String movieId;
 	private int rating;

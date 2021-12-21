@@ -1,4 +1,4 @@
-package com.cinema.infrastructure.model;
+package com.cinema.infrastructure.tmdb.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class GenderModel {
+public class GenderTMDb {
 	
 	@JsonProperty("id")
 	private int id;

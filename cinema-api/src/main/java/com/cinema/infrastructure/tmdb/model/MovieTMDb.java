@@ -1,4 +1,4 @@
-package com.cinema.infrastructure.model;
+package com.cinema.infrastructure.tmdb.model;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import lombok.Data;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
-public class MovieModel {
+public class MovieTMDb {
 
     @JsonProperty("title")
     private String title;
@@ -51,10 +51,10 @@ public class MovieModel {
     private String originalLanguage;
 
     @JsonProperty("production_companies")
-    private List<ProductionCompanyModel> productionCompanies;
+    private List<ProductionCompanyTMDb> productionCompanies;
 
     @JsonProperty("production_countries")
-    private List<ProductionCountryModel> productionCountries;
+    private List<ProductionCountryTMDb> productionCountries;
 
     @JsonProperty("revenue")
     private long revenue;
@@ -63,7 +63,7 @@ public class MovieModel {
     private int runtime;
 
     @JsonProperty("spoken_languages")
-    private List<LanguageModel> spokenLanguages;
+    private List<LanguageTMDb> spokenLanguages;
 
     @JsonProperty("tagline")
     private String tagline;

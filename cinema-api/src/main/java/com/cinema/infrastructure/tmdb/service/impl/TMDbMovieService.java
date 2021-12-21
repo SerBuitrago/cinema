@@ -1,4 +1,4 @@
-package com.cinema.infrastructure.persistence.repository.service;
+package com.cinema.infrastructure.tmdb.service.impl;
 
 import java.net.URI;
 import java.util.List;
@@ -9,10 +9,12 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.cinema.infrastructure.model.GenderModel;
-import com.cinema.infrastructure.model.GendersModel;
+import com.cinema.infrastructure.tmdb.model.GenderTMDb;
+import com.cinema.infrastructure.tmdb.model.GendersTMDb;
+import com.cinema.infrastructure.tmdb.model.MovieTMDb;
+import com.cinema.infrastructure.tmdb.service.TMDbService;
 
-public class TMDbService {
+public class TMDbMovieService implements TMDbService<MovieTMDb>{
 	
     @Value("${tmdb-api-key}")
     private String tmdbApiKey;
@@ -32,14 +34,32 @@ public class TMDbService {
     @Autowired
     private RestTemplate restTemplate;
     
-    public List<GenderModel> genders(){
+    public List<GenderTMDb> genders(){
         UriComponents uriComponents =
                 UriComponentsBuilder.fromUriString(tmdbGenreUrl).build()
                         .expand(tmdbBaseUrl, tmdbApiKey)
                         .encode();
 
         URI uri = uriComponents.toUri();
-        GendersModel genres = restTemplate.getForObject(uri, GendersModel.class);
+        GendersTMDb genres = restTemplate.getForObject(uri, GendersTMDb.class);
         return genres.getGendersList();
     }
+
+	@Override
+	public List<MovieTMDb> fetchMovieList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MovieTMDb fetchMovieById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<MovieTMDb> fetchMoviesBySearchQuery(String query) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
