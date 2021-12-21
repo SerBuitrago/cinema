@@ -1,5 +1,7 @@
 package com.cinema.infrastructure.rest.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +23,30 @@ public class MovieController {
 	private final MovieService movieService;
 	private final MovieMapper movieMapper;
 
-	@GetMapping("/{id}")
-	public ResponseEntity<MovieDTO> findById(@PathVariable Long id) {
-		return new ResponseEntity<>(movieMapper.toDto(movieService.findById(id)), HttpStatus.OK);
+	@GetMapping(value = { "/{id}", "/find/id/{id}" })
+	public ResponseEntity<MovieDTO> findById(@PathVariable("id") Long id) {
+		return ResponseEntity.status(HttpStatus.OK).body(movieMapper.toDto(movieService.findById(id)));
+	}
+
+	@GetMapping(value = { "/find/name/{name}" })
+	public ResponseEntity<MovieDTO> findByName(@PathVariable("name") String name) {
+		return ResponseEntity.status(HttpStatus.OK).body(movieMapper.toDto(movieService.findByName(name)));
+	}
+
+	@GetMapping(value = { "", "/all" })
+	public ResponseEntity<List<MovieDTO>> findAll() {
+		return ResponseEntity.status(HttpStatus.OK).body(movieMapper.toDtoList(movieService.findAll()));
+	}
+
+	@GetMapping(value = { "/all/find/statu/{statu}" })
+	public ResponseEntity<List<MovieDTO>> findByStatuAll(@PathVariable("statu") boolean statu) {
+		return ResponseEntity.status(HttpStatus.OK).body(movieMapper.toDtoList(movieService.findByStatuAll(statu)));
+	}
+
+	@GetMapping(value = { "/range/all/find/date/register/{start}/{end}" })
+	public ResponseEntity<List<MovieDTO>> findByRangeDateRegisterAll(@PathVariable("start") String start,
+			@PathVariable("end") String end) {
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(movieMapper.toDtoList(movieService.findByRangeDateRegisterAll(start, end)));
 	}
 }
