@@ -12,3 +12,14 @@ spring:
     url: jdbc:mysql://localhost:3306/cinema?serverTimezone=America/Bogota&useSSL=false&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
     username: root
     password:
+    
+tmdb:
+  base:
+    url: https://api.themoviedb.org/3/
+  find:
+    movie:
+      url: "{baseUrl}search/movie?api_key={tmdbApiKey}&language=en&query={query}"
+      id:
+        url: "{baseUrl}movie/{id}?api_key={tmdbApiKey}"
+    genre:
+      url: "{baseUrl}genre/movie/list?api_key={tmdbApiKey}" 
