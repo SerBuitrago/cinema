@@ -1,10 +1,11 @@
-package com.cinema.infrastructure.persistence.repository;
+package com.cinema.infrastructure.persistence.repository.service;
 
 import org.springframework.stereotype.Service;
 
 import com.cinema.application.repository.MovieRepository;
 import com.cinema.dominio.Movie;
 import com.cinema.infrastructure.persistence.mapper.MovieEntityMapper;
+import com.cinema.infrastructure.persistence.repository.MovieRepositoryData;
 
 import lombok.RequiredArgsConstructor;
 
