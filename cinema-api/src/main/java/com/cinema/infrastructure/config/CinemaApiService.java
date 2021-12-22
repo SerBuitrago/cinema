@@ -2,6 +2,7 @@ package com.cinema.infrastructure.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 import com.cinema.application.repository.GenderMovieSerieRepository;
 import com.cinema.application.repository.GenderRepository;
@@ -33,5 +34,10 @@ public class CinemaApiService {
 	@Bean
 	public MovieService movieService(MovieRepository movieRepository) {
 		return new MovieService(movieRepository);
+	}
+	
+	@Bean
+    public RestTemplate restTemplate(){
+		return new RestTemplate();
 	}
 }

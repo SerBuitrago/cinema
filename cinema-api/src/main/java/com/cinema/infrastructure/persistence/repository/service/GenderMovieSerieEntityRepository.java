@@ -3,7 +3,7 @@ package com.cinema.infrastructure.persistence.repository.service;
 import org.springframework.stereotype.Service;
 
 import com.cinema.application.repository.GenderMovieSerieRepository;
-import com.cinema.dominio.GenderMovieSerie;
+import com.cinema.dominio.entity.GenderMovieSerie;
 import com.cinema.infrastructure.persistence.mapper.GenderMovieSerieEntityMapper;
 import com.cinema.infrastructure.persistence.repository.GenderMovieSerieRepositoryData;
 

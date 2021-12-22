@@ -3,33 +3,42 @@ package com.cinema.infrastructure.persistence.repository.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cinema.application.repository.MovieRepository;
-import com.cinema.dominio.Movie;
-import com.cinema.infrastructure.config.Cinema;
+import com.cinema.dominio.entity.Movie;
 import com.cinema.infrastructure.exception.CinemaException;
 import com.cinema.infrastructure.persistence.entity.MovieEntity;
 import com.cinema.infrastructure.persistence.mapper.MovieEntityMapper;
 import com.cinema.infrastructure.persistence.repository.MovieRepositoryData;
+import com.cinema.infrastructure.tmdb.service.impl.TMDbMovieServiceImpl;
+import com.cinema.infrastructure.util.Cinema;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 @Service
 public class MovieEntityService implements MovieRepository {
 
 	private final MovieRepositoryData movieRepositoryData;
 	private final MovieEntityMapper movieEntityMapper;
-
+	
+	@Autowired
+	TMDbMovieServiceImpl tmDbMovieService;
+	
+	public MovieEntityService(MovieRepositoryData movieRepositoryData, MovieEntityMapper movieEntityMapper) {
+		this.movieRepositoryData = movieRepositoryData;
+		this.movieEntityMapper = movieEntityMapper;
+	}
+	
 	@Override
 	public Movie findById(Long id) {
 		if (!Cinema.isLong(id))
 			throw new CinemaException("El id de la pelicula no es valido.");
-		Optional<MovieEntity> movie = movieRepositoryData.findById(id);
-		if (movie == null || !movie.isPresent())
+		Optional<MovieEntity> optional = movieRepositoryData.findById(id);
+		if (optional == null || !optional.isPresent())
 			throw new CinemaException("No se ha encontrado ninguna pelicula con el id " + id + ".");
-		return movieEntityMapper.toDomain(movie.orElse(null));
+		MovieEntity movie = optional.orElse(null);
+		movie.setMovieTMDb(tmDbMovieService.findById(id));
+		return movieEntityMapper.toDomain(movie);
 	}
 
 	@Override
@@ -39,6 +48,7 @@ public class MovieEntityService implements MovieRepository {
 		MovieEntity movie = movieRepositoryData.findByName(name);
 		if (movie == null)
 			throw new CinemaException("No se ha encontrado ninguna pelicula con el nombre " + name + ".");
+		movie.setMovieTMDb(tmDbMovieService.findById(movie.getId()));
 		return movieEntityMapper.toDomain(movie);
 	}
 
@@ -57,5 +67,4 @@ public class MovieEntityService implements MovieRepository {
 		String array[] = Cinema.isRangeDateRegister(start, end);
 		return movieEntityMapper.toDomainList(movieRepositoryData.findByRangeDateRegister(array[0], array[1]));
 	}
-
 }

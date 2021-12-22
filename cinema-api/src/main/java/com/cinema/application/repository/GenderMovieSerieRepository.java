@@ -1,6 +1,6 @@
 package com.cinema.application.repository;
 
-import com.cinema.dominio.GenderMovieSerie;
+import com.cinema.dominio.entity.GenderMovieSerie;
 
 public interface GenderMovieSerieRepository {
 	

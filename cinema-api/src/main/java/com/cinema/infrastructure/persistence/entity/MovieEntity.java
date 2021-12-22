@@ -3,6 +3,9 @@ package com.cinema.infrastructure.persistence.entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.cinema.dominio.tmdb.MovieTMDb;
 
 import java.util.List;
 
@@ -19,29 +22,32 @@ import lombok.Setter;
 @Entity
 @Table(name = "movie")
 public class MovieEntity {
-	
+
 	@Id
 	@Column(name = "id")
 	private Long id;
-	
+
 	@Column(name = "name", nullable = false, unique = true, length = 500)
 	private String name;
-	
+
 	@Column(name = "description", nullable = false, length = 1000)
 	private String description;
-	
+
 	@Column(name = "statu", nullable = false, columnDefinition = "tinyint(1) default 1")
 	private boolean statu;
-	
-	@Column(name="date_register", nullable = false)
+
+	@Column(name = "date_register", nullable = false)
 	private String dateRegister;
-	
-	@Column(name="date_update", nullable = true)
+
+	@Column(name = "date_update", nullable = true)
 	private String dateUpdate;
-	
-	@OneToMany(mappedBy="idMovie")
+
+	@OneToMany(mappedBy = "idMovie")
 	private List<ImageEntity> images;
-	
-	@OneToMany(mappedBy="idMovie")
+
+	@OneToMany(mappedBy = "idMovie")
 	private List<GenderMovieSerieEntity> genders;
+
+	@Transient
+	private MovieTMDb movieTMDb;
 }

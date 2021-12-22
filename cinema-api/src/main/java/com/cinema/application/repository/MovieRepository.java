@@ -2,7 +2,7 @@ package com.cinema.application.repository;
 
 import java.util.List;
 
-import com.cinema.dominio.Movie;
+import com.cinema.dominio.entity.Movie;
 
 public interface MovieRepository {
 	

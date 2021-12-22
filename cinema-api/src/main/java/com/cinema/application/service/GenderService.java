@@ -1,7 +1,7 @@
 package com.cinema.application.service;
 
 import com.cinema.application.repository.GenderRepository;
-import com.cinema.dominio.Gender;
+import com.cinema.dominio.entity.Gender;
 
 import lombok.RequiredArgsConstructor;
 

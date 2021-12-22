@@ -1,4 +1,4 @@
-package com.cinema.infrastructure.config;
+package com.cinema.infrastructure.util;
 
 import java.text.ParseException;
 import java.util.List;

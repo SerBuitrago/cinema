@@ -1,12 +1,14 @@
-package com.cinema.dominio;
+package com.cinema.dominio.entity;
 
 import lombok.Data;
 
 @Data
-public class Gender {
+public class Image {
 	
 	private Long id;
-	private String name;
+	private Long idMovie;
+	private Long idSerie;
+	private String path;
 	private boolean statu;
 	private String dateRegister;
 	private String dateUpdate;
