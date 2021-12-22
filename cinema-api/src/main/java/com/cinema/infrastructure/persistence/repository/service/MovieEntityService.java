@@ -43,8 +43,13 @@ public class MovieEntityService implements MovieRepository {
 
 	@Override
 	public Movie findByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		if (!Cinema.isString(name))
+			throw new CinemaException("El nombre de la pelicula no es valido.");
+		MovieEntity movie = movieRepositoryData.findByName(name);
+		if (movie == null)
+			throw new CinemaException("No se ha encontrado ninguna pelicula con el nombre " + name + ".");
+		movie.setMovieTMDb(tmDbMovieService.findById(movie.getId()));
+		return movieEntityMapper.toDomain(movie);
 	}
 
 	@Override
