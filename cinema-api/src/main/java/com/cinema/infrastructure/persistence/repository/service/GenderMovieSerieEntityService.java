@@ -5,15 +5,15 @@ import org.springframework.stereotype.Service;
 import com.cinema.application.repository.GenderMovieSerieRepository;
 import com.cinema.dominio.entity.GenderMovieSerie;
 import com.cinema.infrastructure.persistence.mapper.GenderMovieSerieEntityMapper;
-import com.cinema.infrastructure.persistence.repository.GenderMovieSerieRepositoryData;
+import com.cinema.infrastructure.persistence.repository.GenderMovieSerieEntityRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class GenderMovieSerieEntityRepository implements GenderMovieSerieRepository{
+public class GenderMovieSerieEntityService implements GenderMovieSerieRepository{
 	
-	private final GenderMovieSerieRepositoryData genderMovieSerieRepositoryData;
+	private final GenderMovieSerieEntityRepository genderMovieSerieRepositoryData;
 	private final GenderMovieSerieEntityMapper genderMovieSerieEntityMapper;
 	
 	@Override

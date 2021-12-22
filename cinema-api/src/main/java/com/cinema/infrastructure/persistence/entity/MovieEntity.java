@@ -30,7 +30,7 @@ public class MovieEntity {
 	@Column(name = "name", nullable = false, unique = true, length = 500)
 	private String name;
 
-	@Column(name = "description", nullable = false, length = 1000)
+	@Column(name = "description", nullable = false, length = 800)
 	private String description;
 
 	@Column(name = "statu", nullable = false, columnDefinition = "tinyint(1) default 1")

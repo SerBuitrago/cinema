@@ -11,20 +11,20 @@ import com.cinema.dominio.entity.Movie;
 import com.cinema.infrastructure.exception.CinemaException;
 import com.cinema.infrastructure.persistence.entity.MovieEntity;
 import com.cinema.infrastructure.persistence.mapper.MovieEntityMapper;
-import com.cinema.infrastructure.persistence.repository.MovieRepositoryData;
+import com.cinema.infrastructure.persistence.repository.MovieEntityRepository;
 import com.cinema.infrastructure.tmdb.service.impl.TMDbMovieServiceImpl;
 import com.cinema.infrastructure.util.Cinema;
 
 @Service
 public class MovieEntityService implements MovieRepository {
 
-	private final MovieRepositoryData movieRepositoryData;
+	private final MovieEntityRepository movieRepositoryData;
 	private final MovieEntityMapper movieEntityMapper;
 	
 	@Autowired
 	TMDbMovieServiceImpl tmDbMovieService;
 	
-	public MovieEntityService(MovieRepositoryData movieRepositoryData, MovieEntityMapper movieEntityMapper) {
+	public MovieEntityService(MovieEntityRepository movieRepositoryData, MovieEntityMapper movieEntityMapper) {
 		this.movieRepositoryData = movieRepositoryData;
 		this.movieEntityMapper = movieEntityMapper;
 	}
