@@ -4,10 +4,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cinema.application.service.AuditService;
+import com.cinema.dominio.entity.Audit;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,14 +18,14 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/audit")
 public class AuditController {
-	
+
 	private final AuditService auditService;
-	
+
 	@GetMapping(value = { "/{id}", "/find/id/{id}" })
 	public ResponseEntity<?> findById(@PathVariable("id") Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(auditService.findById(id));
 	}
-	
+
 	@GetMapping(value = { "", "/all" })
 	public ResponseEntity<?> findAll() {
 		return ResponseEntity.status(HttpStatus.OK).body(auditService.findAll());
@@ -36,7 +39,11 @@ public class AuditController {
 	@GetMapping(value = { "/range/all/find/date/register/{start}/{end}" })
 	public ResponseEntity<?> findByRangeDateRegisterAll(@PathVariable("start") String start,
 			@PathVariable("end") String end) {
-		return ResponseEntity.status(HttpStatus.OK)
-				.body(auditService.findByRangeDateRegisterAll(start, end));
+		return ResponseEntity.status(HttpStatus.OK).body(auditService.findByRangeDateRegisterAll(start, end));
+	}
+
+	@PostMapping
+	public ResponseEntity<?> save(@RequestBody Audit audit) {
+		return ResponseEntity.status(HttpStatus.OK).body(auditService.save(audit));
 	}
 }
