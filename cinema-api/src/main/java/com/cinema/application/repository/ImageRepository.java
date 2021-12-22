@@ -1,6 +1,6 @@
 package com.cinema.application.repository;
 
-import com.cinema.dominio.Image;
+import com.cinema.dominio.entity.Image;
 
 public interface ImageRepository {
 

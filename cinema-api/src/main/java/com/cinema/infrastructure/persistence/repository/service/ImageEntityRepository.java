@@ -3,7 +3,7 @@ package com.cinema.infrastructure.persistence.repository.service;
 import org.springframework.stereotype.Service;
 
 import com.cinema.application.repository.ImageRepository;
-import com.cinema.dominio.Image;
+import com.cinema.dominio.entity.Image;
 import com.cinema.infrastructure.persistence.mapper.ImageEntityMapper;
 import com.cinema.infrastructure.persistence.repository.ImageRepositoryData;
 

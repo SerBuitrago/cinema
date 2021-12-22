@@ -1,4 +1,4 @@
-package com.cinema.infrastructure.config;
+package com.cinema.infrastructure.util;
 
 public class CinemaVariable {
 	public static final String[] CINEMA_ARRAY_DATE = { "January", "February", "March", "April", "May", "June", "July",

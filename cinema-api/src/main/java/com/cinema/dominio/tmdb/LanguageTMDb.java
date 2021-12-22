@@ -1,4 +1,4 @@
-package com.cinema.infrastructure.tmdb.model;
+package com.cinema.dominio.tmdb;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;

@@ -1,4 +1,4 @@
-package com.cinema.infrastructure.config;
+package com.cinema.infrastructure.util;
 
 import java.io.Serializable;
 import java.text.DateFormat;

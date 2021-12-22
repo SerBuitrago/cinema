@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 
-import com.cinema.dominio.Movie;
+import com.cinema.dominio.entity.Movie;
 import com.cinema.infrastructure.persistence.entity.MovieEntity;
 
 @Mapper(componentModel = "spring")

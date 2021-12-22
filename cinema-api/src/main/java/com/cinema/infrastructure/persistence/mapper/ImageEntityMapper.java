@@ -2,7 +2,7 @@ package com.cinema.infrastructure.persistence.mapper;
 
 import org.mapstruct.Mapper;
 
-import com.cinema.dominio.Image;
+import com.cinema.dominio.entity.Image;
 import com.cinema.infrastructure.persistence.entity.ImageEntity;
 
 @Mapper(componentModel = "spring")

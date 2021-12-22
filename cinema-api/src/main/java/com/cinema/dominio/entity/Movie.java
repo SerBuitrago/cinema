@@ -1,6 +1,8 @@
-package com.cinema.dominio;
+package com.cinema.dominio.entity;
 
 import java.util.List;
+
+import com.cinema.dominio.tmdb.MovieTMDb;
 
 import lombok.Data;
 
@@ -15,4 +17,6 @@ public class Movie {
 	private String dateUpdate;
 	private List<Image> images;
 	private List<GenderMovieSerie> genders;
+	
+	private MovieTMDb movieTMDb;
 }

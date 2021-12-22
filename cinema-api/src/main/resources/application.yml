@@ -16,10 +16,11 @@ spring:
 tmdb:
   base:
     url: https://api.themoviedb.org/3/
+    key: 073e12be03eeaf53ed1368a2b178493c
   find:
     movie:
-      url: "{baseUrl}search/movie?api_key={tmdbApiKey}&language=en&query={query}"
+      url: "{baseUrl}search/movie?api_key={tmdbBaseKey}&language=es&query={query}"
       id:
-        url: "{baseUrl}movie/{id}?api_key={tmdbApiKey}"
+        url: "{baseUrl}movie/{id}?api_key={tmdbBaseKey}&language=es"
     genre:
-      url: "{baseUrl}genre/movie/list?api_key={tmdbApiKey}" 
+      url: "{baseUrl}genre/movie/list?api_key={tmdbBaseKey}" 

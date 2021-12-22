@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @SpringBootApplication(scanBasePackages = "com.cinema.infrastructure")
-@EntityScan(basePackages = "com.cinema.domain")
+@EntityScan(basePackages = "com.cinema.domain.entity")
 public class CinemaApiApplication {
 
 	public static void main(String[] args) {

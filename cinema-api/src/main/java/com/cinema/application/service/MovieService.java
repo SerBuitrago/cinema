@@ -3,7 +3,7 @@ package com.cinema.application.service;
 import java.util.List;
 
 import com.cinema.application.repository.MovieRepository;
-import com.cinema.dominio.Movie;
+import com.cinema.dominio.entity.Movie;
 
 import lombok.RequiredArgsConstructor;
 
@@ -11,7 +11,8 @@ import lombok.RequiredArgsConstructor;
 public class MovieService implements MovieRepository{
 
 	private final MovieRepository movieRepository;
-
+	
+	@Override
 	public Movie findById(Long id) {
 		return movieRepository.findById(id);
 	}

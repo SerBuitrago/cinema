@@ -1,4 +1,4 @@
-package com.cinema.dominio;
+package com.cinema.dominio.entity;
 
 import lombok.Data;
 

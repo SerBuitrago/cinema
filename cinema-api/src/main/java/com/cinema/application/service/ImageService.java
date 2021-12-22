@@ -1,7 +1,7 @@
 package com.cinema.application.service;
 
 import com.cinema.application.repository.ImageRepository;
-import com.cinema.dominio.Image;
+import com.cinema.dominio.entity.Image;
 
 import lombok.RequiredArgsConstructor;
 

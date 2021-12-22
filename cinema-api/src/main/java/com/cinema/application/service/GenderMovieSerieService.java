@@ -1,7 +1,7 @@
 package com.cinema.application.service;
 
 import com.cinema.application.repository.GenderMovieSerieRepository;
-import com.cinema.dominio.GenderMovieSerie;
+import com.cinema.dominio.entity.GenderMovieSerie;
 
 import lombok.RequiredArgsConstructor;
 
