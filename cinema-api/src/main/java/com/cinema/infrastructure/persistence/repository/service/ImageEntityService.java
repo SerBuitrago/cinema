@@ -5,14 +5,14 @@ import org.springframework.stereotype.Service;
 import com.cinema.application.repository.ImageRepository;
 import com.cinema.dominio.entity.Image;
 import com.cinema.infrastructure.persistence.mapper.ImageEntityMapper;
-import com.cinema.infrastructure.persistence.repository.ImageRepositoryData;
+import com.cinema.infrastructure.persistence.repository.ImageEntityRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class ImageEntityRepository implements ImageRepository{
-	private final ImageRepositoryData imageRepositoryData;
+public class ImageEntityService implements ImageRepository{
+	private final ImageEntityRepository imageRepositoryData;
 	private final ImageEntityMapper imageEntityMapper;
 	
 	@Override

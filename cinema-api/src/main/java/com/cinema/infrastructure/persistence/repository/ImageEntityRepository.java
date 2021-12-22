@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.cinema.infrastructure.persistence.entity.ImageEntity;
 
 @Repository
-public interface ImageRepositoryData extends JpaRepository<ImageEntity, Long>{
+public interface ImageEntityRepository extends JpaRepository<ImageEntity, Long>{
 }

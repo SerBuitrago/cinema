@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.cinema.infrastructure.persistence.entity.MovieEntity;
 
 @Repository
-public interface MovieRepositoryData extends JpaRepository<MovieEntity, Long>{
+public interface MovieEntityRepository extends JpaRepository<MovieEntity, Long>{
 	
 	MovieEntity findByName(String name);
 	
