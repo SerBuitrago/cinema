@@ -18,20 +18,23 @@ cinema:
     table:
       audit: audit
       movie: movie
-      serie: serie   
+      serie: serie
+      gender: gender   
 tmdb:
   base:
     url: https://api.themoviedb.org/3/
     language: "language=es"
     image:
-      png: https://image.tmdb.org/t/p/original/
-      svg: https://image.tmdb.org/t/p/original/
-      jpg: https://image.tmdb.org/t/p/w500/
+      original: https://image.tmdb.org/t/p/original
+      svg: https://image.tmdb.org/t/p/original
+      jpg: https://image.tmdb.org/t/p/w500
     key: 073e12be03eeaf53ed1368a2b178493c
   find:
     movie:
       url: "{baseUrl}search/movie?api_key={tmdbBaseKey}&{language}&query={query}"
       id:
         url: "{baseUrl}movie/{id}?api_key={tmdbBaseKey}&{language}"
+      image:
+        url: "{baseUrl}movie/{id}/images?api_key={tmdbBaseKey}&{language}"
     genre:
       url: "{baseUrl}genre/movie/list?api_key={tmdbBaseKey}&{language}" 

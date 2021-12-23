@@ -5,12 +5,15 @@ import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.cinema.application.repository.MovieRepository;
 import com.cinema.dominio.entity.Movie;
+import com.cinema.dominio.tmdb.MovieTMDb;
 import com.cinema.infrastructure.exception.CinemaException;
 import com.cinema.infrastructure.persistence.entity.MovieEntity;
 import com.cinema.infrastructure.persistence.entity.validate.MovieEntityValidate;
@@ -24,11 +27,16 @@ import com.cinema.infrastructure.util.CinemaDate;
 @Service
 public class MovieEntityService implements MovieRepository {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(MovieEntityService.class);
+
 	@Value("${cinema.audit.database}")
-	private String AUDIT_DATABASE;
+	private String CINEMA_AUDIT_DATABASE;
 
 	@Value("${cinema.audit.table.movie}")
-	private String AUDIT_TABLE;
+	private String CINEMA_AUDIT_TABLE;
+	
+	@Value("${tmdb.base.image.original}")
+	private String CINEMA_TMDB_IMAGE_URL;
 
 	private CinemaAudit cinemaAudit;
 
@@ -48,7 +56,7 @@ public class MovieEntityService implements MovieRepository {
 
 	@PostConstruct
 	public void init() {
-		cinemaAudit = new CinemaAudit(AUDIT_DATABASE, AUDIT_TABLE, null, "pelicula");
+		cinemaAudit = new CinemaAudit(CINEMA_AUDIT_DATABASE, CINEMA_AUDIT_TABLE, null, "pelicula");
 	}
 
 	@Override
@@ -104,11 +112,13 @@ public class MovieEntityService implements MovieRepository {
 	}
 
 	private Movie saveToSave(Movie movie, int type) {
+		if (!testId(movie.getId()))
+			throw new CinemaException("Ya existe una pelicula registrada con el id " + movie.getId() + ".");
 		CinemaDate date = new CinemaDate();
 		movie.setDateRegister(date.currentToDateTime(null));
 		movie.setStatu(true);
 		movie.setDateUpdate(null);
-		return movie;
+		return findTmdbById(movie);
 	}
 
 	private Movie saveToUpdate(Movie movie, int type) {
@@ -119,6 +129,26 @@ public class MovieEntityService implements MovieRepository {
 		movie.setDateUpdate(date.currentToDateTime(null));
 		movie.setDateRegister(type == 3 ? movie.getDateRegister() : aux.getDateRegister());
 		movie.setStatu(type == 3 ? !movie.isStatu() : aux.isStatu());
+		return type == 3 ? movie : findTmdbById(movie);
+	}
+
+	private Movie findTmdbById(Movie movie) {
+		MovieTMDb movieTMDb = tmDbMovieService.findById(movie.getId());
+		movie.setName(movieTMDb.getTitle());
+		movie.setDescription(movieTMDb.getOverview());
+		movie.setAverage(movieTMDb.getVoteAverage());
+		movie.setPoster(CINEMA_TMDB_IMAGE_URL+movieTMDb.getPosterPath());
+		movie.setBackdrop(CINEMA_TMDB_IMAGE_URL+movieTMDb.getBackdropPath());
 		return movie;
+	}
+
+	private boolean testId(Long id) {
+		Movie movie = null;
+		try {
+			movie = findById(id);
+		} catch (CinemaException e) {
+			LOGGER.error("testId(Long id)", e);
+		}
+		return (movie == null) ? true : false;
 	}
 }
