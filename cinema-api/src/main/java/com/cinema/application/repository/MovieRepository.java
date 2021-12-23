@@ -15,4 +15,6 @@ public interface MovieRepository {
 	List<Movie> findByStatuAll(boolean statu);
 	
 	List<Movie> findByRangeDateRegisterAll(String start, String end);
+	
+	Movie save(Movie movie, int type);
 }

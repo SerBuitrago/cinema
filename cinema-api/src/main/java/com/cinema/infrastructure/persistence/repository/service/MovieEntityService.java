@@ -3,37 +3,60 @@ package com.cinema.infrastructure.persistence.repository.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.cinema.application.repository.MovieRepository;
 import com.cinema.dominio.entity.Movie;
 import com.cinema.infrastructure.exception.CinemaException;
 import com.cinema.infrastructure.persistence.entity.MovieEntity;
+import com.cinema.infrastructure.persistence.entity.validate.MovieEntityValidate;
 import com.cinema.infrastructure.persistence.mapper.MovieEntityMapper;
 import com.cinema.infrastructure.persistence.repository.MovieEntityRepository;
 import com.cinema.infrastructure.tmdb.service.impl.TMDbMovieServiceImpl;
 import com.cinema.infrastructure.util.Cinema;
+import com.cinema.infrastructure.util.CinemaAudit;
+import com.cinema.infrastructure.util.CinemaDate;
 
 @Service
 public class MovieEntityService implements MovieRepository {
 
-	private final MovieEntityRepository movieRepositoryData;
+	@Value("${cinema.audit.database}")
+	private String AUDIT_DATABASE;
+
+	@Value("${cinema.audit.table.movie}")
+	private String AUDIT_TABLE;
+
+	private CinemaAudit cinemaAudit;
+
+	private final MovieEntityRepository movieEntityRepository;
 	private final MovieEntityMapper movieEntityMapper;
-	
+
 	@Autowired
 	TMDbMovieServiceImpl tmDbMovieService;
-	
-	public MovieEntityService(MovieEntityRepository movieRepositoryData, MovieEntityMapper movieEntityMapper) {
-		this.movieRepositoryData = movieRepositoryData;
+
+	@Autowired
+	AuditEntityService auditEntityService;
+
+	public MovieEntityService(MovieEntityRepository movieEntityRepository, MovieEntityMapper movieEntityMapper) {
+		this.movieEntityRepository = movieEntityRepository;
 		this.movieEntityMapper = movieEntityMapper;
 	}
-	
+
+	@PostConstruct
+	public void init() {
+		cinemaAudit = new CinemaAudit(AUDIT_DATABASE, AUDIT_TABLE, null, "pelicula");
+	}
+
 	@Override
 	public Movie findById(Long id) {
+		auditEntityService.save(cinemaAudit.findById(id));
 		if (!Cinema.isLong(id))
 			throw new CinemaException("El id de la pelicula no es valido.");
-		Optional<MovieEntity> optional = movieRepositoryData.findById(id);
+		Optional<MovieEntity> optional = movieEntityRepository.findById(id);
 		if (optional == null || !optional.isPresent())
 			throw new CinemaException("No se ha encontrado ninguna pelicula con el id " + id + ".");
 		MovieEntity movie = optional.orElse(null);
@@ -45,7 +68,7 @@ public class MovieEntityService implements MovieRepository {
 	public Movie findByName(String name) {
 		if (!Cinema.isString(name))
 			throw new CinemaException("El nombre de la pelicula no es valido.");
-		MovieEntity movie = movieRepositoryData.findByName(name);
+		MovieEntity movie = movieEntityRepository.findByName(name);
 		if (movie == null)
 			throw new CinemaException("No se ha encontrado ninguna pelicula con el nombre " + name + ".");
 		movie.setMovieTMDb(tmDbMovieService.findById(movie.getId()));
@@ -54,17 +77,48 @@ public class MovieEntityService implements MovieRepository {
 
 	@Override
 	public List<Movie> findAll() {
-		return movieEntityMapper.toDomainList(movieRepositoryData.findAll());
+		return movieEntityMapper.toDomainList(movieEntityRepository.findAll());
 	}
 
 	@Override
 	public List<Movie> findByStatuAll(boolean statu) {
-		return movieEntityMapper.toDomainList(movieRepositoryData.findByStatu(statu));
+		return movieEntityMapper.toDomainList(movieEntityRepository.findByStatu(statu));
 	}
 
 	@Override
 	public List<Movie> findByRangeDateRegisterAll(String start, String end) {
 		String array[] = Cinema.isRangeDateRegister(start, end);
-		return movieEntityMapper.toDomainList(movieRepositoryData.findByRangeDateRegister(array[0], array[1]));
+		return movieEntityMapper.toDomainList(movieEntityRepository.findByRangeDateRegister(array[0], array[1]));
+	}
+
+	@Override
+	public Movie save(Movie movie, int type) {
+		MovieEntityValidate.validate(movie);
+		String message = Cinema.message(type, false);
+		MovieEntity movieEntity = movieEntityMapper
+				.toEntity(type == 1 ? saveToSave(movie, type) : saveToUpdate(movie, type));
+		movieEntity = movieEntityRepository.save(movieEntity);
+		if (movieEntity == null)
+			throw new CinemaException("No se ha " + message + " la pelicula.");
+		return movieEntityMapper.toDomain(movieEntity);
+	}
+
+	private Movie saveToSave(Movie movie, int type) {
+		CinemaDate date = new CinemaDate();
+		movie.setDateRegister(date.currentToDateTime(null));
+		movie.setStatu(true);
+		movie.setDateUpdate(null);
+		return movie;
+	}
+
+	private Movie saveToUpdate(Movie movie, int type) {
+		Movie aux = null;
+		if (type != 3)
+			aux = findById(movie.getId());
+		CinemaDate date = new CinemaDate();
+		movie.setDateUpdate(date.currentToDateTime(null));
+		movie.setDateRegister(type == 3 ? movie.getDateRegister() : aux.getDateRegister());
+		movie.setStatu(type == 3 ? !movie.isStatu() : aux.isStatu());
+		return movie;
 	}
 }

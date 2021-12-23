@@ -12,6 +12,13 @@ spring:
     url: jdbc:mysql://localhost:3306/cinema?serverTimezone=America/Bogota&useSSL=false&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
     username: root
     password: 
+cinema:
+  audit:
+    database: cinema
+    table:
+      audit: audit
+      movie: movie
+      serie: serie   
 tmdb:
   base:
     url: https://api.themoviedb.org/3/
