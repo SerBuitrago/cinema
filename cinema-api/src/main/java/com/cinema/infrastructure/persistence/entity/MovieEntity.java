@@ -27,11 +27,20 @@ public class MovieEntity {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "name", nullable = false, unique = true, length = 500)
+	@Column(name = "name", nullable = false, length = 500)
 	private String name;
 
 	@Column(name = "description", nullable = false, length = 800)
 	private String description;
+	
+	@Column(name = "poster", nullable = false, length = 200)
+	private String poster;
+	
+	@Column(name = "backdrop", nullable = false, length = 200)
+	private String backdrop;
+	
+	@Column(name = "average", nullable = false)
+	private float average;
 
 	@Column(name = "statu", nullable = false, columnDefinition = "tinyint(1) default 1")
 	private boolean statu;

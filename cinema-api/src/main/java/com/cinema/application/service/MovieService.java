@@ -36,4 +36,9 @@ public class MovieService implements MovieRepository{
 	public List<Movie> findByRangeDateRegisterAll(String start, String end) {
 		return movieRepository.findByRangeDateRegisterAll(start, end);
 	}
+
+	@Override
+	public Movie save(Movie movie, int type) {
+		return movieRepository.save(movie, type);
+	}
 }

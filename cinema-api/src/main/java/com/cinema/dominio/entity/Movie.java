@@ -13,6 +13,9 @@ public class Movie {
 	private String name;
 	private String description;
 	private boolean statu;
+	private String poster;
+	private String backdrop;
+	private float average;
 	private String dateRegister;
 	private String dateUpdate;
 	private List<Image> images;
