@@ -23,8 +23,11 @@ public class GenderMovieEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "id_movie", nullable = true)
+	@Column(name = "id_movie", nullable = false)
 	private Long idMovie;
+	
+	@Column(name = "id_gender", nullable = false)
+	private Long idGender;
 	
 	@Column(name = "statu", nullable = false, columnDefinition = "tinyint(1) default 1")
 	private boolean statu;

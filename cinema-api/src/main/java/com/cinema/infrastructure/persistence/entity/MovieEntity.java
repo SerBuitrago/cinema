@@ -54,9 +54,6 @@ public class MovieEntity {
 	@OneToMany(mappedBy = "idMovie")
 	private List<ImageEntity> images;
 
-	@OneToMany(mappedBy = "idMovie")
-	private List<GenderMovieEntity> genders;
-
 	@Transient
 	private MovieTMDb movieTMDb;
 }

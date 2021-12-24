@@ -18,8 +18,8 @@ public class Movie {
 	private float average;
 	private String dateRegister;
 	private String dateUpdate;
+	
 	private List<Image> images;
-	private List<GenderMovie> genders;
 	
 	private MovieTMDb movieTMDb;
 }

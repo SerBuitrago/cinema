@@ -1,6 +1,5 @@
 package com.cinema.infrastructure.persistence.repository.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,6 +55,9 @@ public class MovieEntityService implements MovieRepository {
 	
 	@Autowired
 	GenderEntityService genderEntityService;
+	
+	@Autowired
+	GenderMovieEntityService genderMovieEntityService;
 
 	public MovieEntityService(MovieEntityRepository movieEntityRepository, MovieEntityMapper movieEntityMapper) {
 		this.movieEntityRepository = movieEntityRepository;
@@ -156,26 +158,29 @@ public class MovieEntityService implements MovieRepository {
 	}
 	
 	private Movie saveToSaveGenders(Movie movie) {
-		if(this.tmDbMovieService != null && !Cinema.isList(this.tmDbMovieService.genders()))
+		if(this.movieTMDb != null && !Cinema.isList(this.movieTMDb.getGenres()))
 			return movie;
-		for(GenderTMDb gender: this.tmDbMovieService.genders()) {
+		for(GenderTMDb gender: this.movieTMDb.getGenres()) {
 			Long id = Long.parseLong(String.valueOf(gender.getId()));
 			try {
 				genderEntityService.save(new Gender(id, gender.getName()));
 			}catch (CinemaException e) {
 				LOGGER.error("saveToSaveGenders(Movie movie)", e);
 			}finally {
-				saveToSaveGendersMovie(movie, id);
+				saveToSaveGendersMovie(movie.getId(), id);
 			}
 		}
 		return movie;
 	}
 	
-	private Movie saveToSaveGendersMovie(Movie movie, Long idGender) {
-		List<GenderMovie> list = new ArrayList<>();
-		
-		movie.setGenders(list);
-		return movie;
+	private GenderMovie saveToSaveGendersMovie(Long idMovie, Long idGender) {
+		GenderMovie genderMovie= null;
+		try {
+			genderMovie = genderMovieEntityService.save(new GenderMovie(idMovie, idGender));
+		}catch (CinemaException e) {
+			LOGGER.error("saveToSaveGenders(Movie movie)", e);
+		}
+		return genderMovie;
 	}
 
 	private boolean testId(Long id) {
