@@ -5,18 +5,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Gender {
+@NoArgsConstructor
+public class GenderMovie {
 	
 	private Long id;
-	private String name;
+	private Long idMovie;
+	private Long idGender;
 	private boolean statu;
 	private String dateRegister;
-	private String dateUpdate;
 	
-	public Gender(Long id, String name) {
-		this.id = id;
-		this.name = name;
+	public GenderMovie(Long idMovie, Long idGender) {
+		this.idMovie = idMovie;
+		this.idGender = idGender;
 	}
 }

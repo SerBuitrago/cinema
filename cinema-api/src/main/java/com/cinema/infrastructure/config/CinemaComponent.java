@@ -23,6 +23,9 @@ public class CinemaComponent {
     
     @Value("${tmdb.find.movie.id.url}")
     private String tmdbFindMovieId;
+    
+    @Value("${tmdb.find.movie.image.url}")
+    private String tmdbFindMovieImageId;
 
     @Value("${tmdb.find.genre.url}")
     private String tmdbFindMovieGenre;

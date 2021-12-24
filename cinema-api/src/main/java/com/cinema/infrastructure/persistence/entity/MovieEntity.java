@@ -52,10 +52,7 @@ public class MovieEntity {
 	private String dateUpdate;
 
 	@OneToMany(mappedBy = "idMovie")
-	private List<ImageEntity> images;
-
-	@OneToMany(mappedBy = "idMovie")
-	private List<GenderMovieSerieEntity> genders;
+	private List<ImageMovieEntity> images;
 
 	@Transient
 	private MovieTMDb movieTMDb;

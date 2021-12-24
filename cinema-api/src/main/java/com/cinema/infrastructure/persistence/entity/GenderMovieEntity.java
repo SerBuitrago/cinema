@@ -15,29 +15,23 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "image")
-public class ImageEntity {
+@Table(name = "gender_movie")
+public class GenderMovieEntity {
 	
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "id_movie", nullable = true)
+	@Column(name = "id_movie", nullable = false)
 	private Long idMovie;
 	
-	@Column(name = "id_serie", nullable = true)
-	private Long idSerie;
-	
-	@Column(name = "path", nullable = false, length = 500)
-	private String path;
+	@Column(name = "id_gender", nullable = false)
+	private Long idGender;
 	
 	@Column(name = "statu", nullable = false, columnDefinition = "tinyint(1) default 1")
 	private boolean statu;
 	
 	@Column(name="date_register", nullable = false)
 	private String dateRegister;
-	
-	@Column(name="date_update", nullable = true)
-	private String dateUpdate;
 }

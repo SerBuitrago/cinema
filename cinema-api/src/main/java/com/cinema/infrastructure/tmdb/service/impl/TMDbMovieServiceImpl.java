@@ -13,6 +13,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.cinema.dominio.tmdb.GenderTMDb;
 import com.cinema.dominio.tmdb.GendersTMDb;
+import com.cinema.dominio.tmdb.ImageMovieTMDb;
 import com.cinema.dominio.tmdb.MovieTMDb;
 import com.cinema.infrastructure.config.CinemaComponent;
 import com.cinema.infrastructure.exception.CinemaException;
@@ -46,6 +47,26 @@ public class TMDbMovieServiceImpl implements TMDbMovieService {
 				throw new CinemaException("No se ha encontrado ninguna pelicula en tmdb con el " + id + ".");
 		}
 		return movie;
+	}
+
+	@Override
+	public ImageMovieTMDb findImageById(Long id) {
+		UriComponents uriComponents = UriComponentsBuilder.fromUriString(cinemaComponent.getTmdbFindMovieImageId())
+				.build().expand(cinemaComponent.getTmdbBaseUrl(), id, cinemaComponent.getTmdbApiKey(),
+						cinemaComponent.getTmdbLanguage())
+				.encode();
+		ImageMovieTMDb imageMovieTMDb = null;
+		try {
+			URI uri = uriComponents.toUri();
+			imageMovieTMDb = restTemplate.getForObject(uri, ImageMovieTMDb.class);
+		} catch (Exception e) {
+			LOGGER.error("findImageById(Long id)", e);
+		} finally {
+			if (imageMovieTMDb == null)
+				throw new CinemaException(
+						"No se ha encontrado ninguna imagen de la pelicula en tmdb con el " + id + ".");
+		}
+		return imageMovieTMDb;
 	}
 
 	@Override

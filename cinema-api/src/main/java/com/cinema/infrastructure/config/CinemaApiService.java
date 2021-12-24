@@ -5,9 +5,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
 import com.cinema.application.repository.AuditRepository;
-import com.cinema.application.repository.GenderMovieSerieRepository;
+import com.cinema.application.repository.GenderMovieRepository;
 import com.cinema.application.repository.GenderRepository;
-import com.cinema.application.repository.ImageRepository;
+import com.cinema.application.repository.ImageMovieRepository;
 import com.cinema.application.repository.MovieRepository;
 import com.cinema.application.repository.SerieChapterRepository;
 import com.cinema.application.repository.SerieRepository;
@@ -16,9 +16,9 @@ import com.cinema.application.repository.ServerMovieRepository;
 import com.cinema.application.repository.ServerRepository;
 import com.cinema.application.repository.ServerSerieChapterRepository;
 import com.cinema.application.service.AuditService;
-import com.cinema.application.service.GenderMovieSerieService;
+import com.cinema.application.service.GenderMovieService;
 import com.cinema.application.service.GenderService;
-import com.cinema.application.service.ImageService;
+import com.cinema.application.service.ImageMovieService;
 import com.cinema.application.service.MovieService;
 import com.cinema.application.service.SerieChapterService;
 import com.cinema.application.service.SerieSeasonService;
@@ -36,8 +36,8 @@ public class CinemaApiService {
 	}
 	
 	@Bean
-	public GenderMovieSerieService genderMovieSerieService(GenderMovieSerieRepository genderMovieSerieRepository) {
-		return new GenderMovieSerieService(genderMovieSerieRepository);
+	public GenderMovieService genderMovieService(GenderMovieRepository genderMovieRepository) {
+		return new GenderMovieService(genderMovieRepository);
 	}
 	
 	@Bean
@@ -46,8 +46,8 @@ public class CinemaApiService {
 	}
 	
 	@Bean
-	public ImageService imageService(ImageRepository imageRepository) {
-		return new ImageService(imageRepository);
+	public ImageMovieService imageMovieService(ImageMovieRepository imageMovieRepository) {
+		return new ImageMovieService(imageMovieRepository);
 	}
 	
 	@Bean
