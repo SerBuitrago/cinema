@@ -15,8 +15,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "gender_movie_serie")
-public class GenderMovieSerieEntity {
+@Table(name = "gender_movie")
+public class GenderMovieEntity {
 	
 	@Id
 	@Column(name = "id")
@@ -26,6 +26,9 @@ public class GenderMovieSerieEntity {
 	@Column(name = "id_movie", nullable = true)
 	private Long idMovie;
 	
-	@Column(name = "id_serie", nullable = true)
-	private Long idSerie;
+	@Column(name = "statu", nullable = false, columnDefinition = "tinyint(1) default 1")
+	private boolean statu;
+	
+	@Column(name="date_register", nullable = false)
+	private String dateRegister;
 }

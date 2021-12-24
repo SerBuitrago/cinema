@@ -3,9 +3,10 @@ package com.cinema.dominio.entity;
 import lombok.Data;
 
 @Data
-public class GenderMovieSerie {
+public class GenderMovie {
 	
 	private Long id;
 	private Long idMovie;
-	private Long idSerie;
+	private boolean statu;
+	private String dateRegister;
 }

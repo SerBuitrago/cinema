@@ -19,7 +19,7 @@ public class Movie {
 	private String dateRegister;
 	private String dateUpdate;
 	private List<Image> images;
-	private List<GenderMovieSerie> genders;
+	private List<GenderMovie> genders;
 	
 	private MovieTMDb movieTMDb;
 }

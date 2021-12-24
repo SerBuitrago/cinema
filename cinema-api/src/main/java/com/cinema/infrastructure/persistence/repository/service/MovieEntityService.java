@@ -1,5 +1,6 @@
 package com.cinema.infrastructure.persistence.repository.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,7 +13,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.cinema.application.repository.MovieRepository;
+import com.cinema.dominio.entity.Gender;
+import com.cinema.dominio.entity.GenderMovie;
 import com.cinema.dominio.entity.Movie;
+import com.cinema.dominio.tmdb.GenderTMDb;
 import com.cinema.dominio.tmdb.MovieTMDb;
 import com.cinema.infrastructure.exception.CinemaException;
 import com.cinema.infrastructure.persistence.entity.MovieEntity;
@@ -39,6 +43,7 @@ public class MovieEntityService implements MovieRepository {
 	private String CINEMA_TMDB_IMAGE_URL;
 
 	private CinemaAudit cinemaAudit;
+	private MovieTMDb movieTMDb;
 
 	private final MovieEntityRepository movieEntityRepository;
 	private final MovieEntityMapper movieEntityMapper;
@@ -48,6 +53,9 @@ public class MovieEntityService implements MovieRepository {
 
 	@Autowired
 	AuditEntityService auditEntityService;
+	
+	@Autowired
+	GenderEntityService genderEntityService;
 
 	public MovieEntityService(MovieEntityRepository movieEntityRepository, MovieEntityMapper movieEntityMapper) {
 		this.movieEntityRepository = movieEntityRepository;
@@ -56,7 +64,8 @@ public class MovieEntityService implements MovieRepository {
 
 	@PostConstruct
 	public void init() {
-		cinemaAudit = new CinemaAudit(CINEMA_AUDIT_DATABASE, CINEMA_AUDIT_TABLE, null, "pelicula");
+		this.movieTMDb= null;
+		this.cinemaAudit = new CinemaAudit(CINEMA_AUDIT_DATABASE, CINEMA_AUDIT_TABLE, null, "pelicula");
 	}
 
 	@Override
@@ -108,7 +117,9 @@ public class MovieEntityService implements MovieRepository {
 		movieEntity = movieEntityRepository.save(movieEntity);
 		if (movieEntity == null)
 			throw new CinemaException("No se ha " + message + " la pelicula.");
-		return movieEntityMapper.toDomain(movieEntity);
+		movie = movieEntityMapper.toDomain(movieEntity);
+		saveToSaveGenders(movie);
+		return movie;
 	}
 
 	private Movie saveToSave(Movie movie, int type) {
@@ -118,7 +129,7 @@ public class MovieEntityService implements MovieRepository {
 		movie.setDateRegister(date.currentToDateTime(null));
 		movie.setStatu(true);
 		movie.setDateUpdate(null);
-		return findTmdbById(movie);
+		return findTmdbById(movie, true);
 	}
 
 	private Movie saveToUpdate(Movie movie, int type) {
@@ -129,16 +140,41 @@ public class MovieEntityService implements MovieRepository {
 		movie.setDateUpdate(date.currentToDateTime(null));
 		movie.setDateRegister(type == 3 ? movie.getDateRegister() : aux.getDateRegister());
 		movie.setStatu(type == 3 ? !movie.isStatu() : aux.isStatu());
-		return type == 3 ? movie : findTmdbById(movie);
+		return type == 3 ? movie : findTmdbById(movie, false);
 	}
 
-	private Movie findTmdbById(Movie movie) {
-		MovieTMDb movieTMDb = tmDbMovieService.findById(movie.getId());
+	private Movie findTmdbById(Movie movie, boolean registerGender) {
+		this.movieTMDb = tmDbMovieService.findById(movie.getId());
 		movie.setName(movieTMDb.getTitle());
 		movie.setDescription(movieTMDb.getOverview());
 		movie.setAverage(movieTMDb.getVoteAverage());
 		movie.setPoster(CINEMA_TMDB_IMAGE_URL+movieTMDb.getPosterPath());
 		movie.setBackdrop(CINEMA_TMDB_IMAGE_URL+movieTMDb.getBackdropPath());
+		if(!registerGender)
+			return movie;
+		return movie;
+	}
+	
+	private Movie saveToSaveGenders(Movie movie) {
+		if(this.tmDbMovieService != null && !Cinema.isList(this.tmDbMovieService.genders()))
+			return movie;
+		for(GenderTMDb gender: this.tmDbMovieService.genders()) {
+			Long id = Long.parseLong(String.valueOf(gender.getId()));
+			try {
+				genderEntityService.save(new Gender(id, gender.getName()));
+			}catch (CinemaException e) {
+				LOGGER.error("saveToSaveGenders(Movie movie)", e);
+			}finally {
+				saveToSaveGendersMovie(movie, id);
+			}
+		}
+		return movie;
+	}
+	
+	private Movie saveToSaveGendersMovie(Movie movie, Long idGender) {
+		List<GenderMovie> list = new ArrayList<>();
+		
+		movie.setGenders(list);
 		return movie;
 	}
 
