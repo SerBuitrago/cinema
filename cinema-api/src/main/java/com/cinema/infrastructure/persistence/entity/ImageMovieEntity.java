@@ -15,8 +15,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "image")
-public class ImageEntity {
+@Table(name = "image_movie")
+public class ImageMovieEntity {
 	
 	@Id
 	@Column(name = "id")
@@ -26,14 +26,20 @@ public class ImageEntity {
 	@Column(name = "id_movie", nullable = true)
 	private Long idMovie;
 	
-	@Column(name = "id_serie", nullable = true)
-	private Long idSerie;
-	
 	@Column(name = "path", nullable = false, length = 500)
 	private String path;
 	
 	@Column(name = "statu", nullable = false, columnDefinition = "tinyint(1) default 1")
 	private boolean statu;
+	
+	@Column(name = "backdrops", nullable = false, columnDefinition = "tinyint(1) default 0")
+	private boolean backdrops;
+	
+	@Column(name = "posters", nullable = false, columnDefinition = "tinyint(1) default 0")
+	private boolean posters;
+	
+	@Column(name = "logos", nullable = false, columnDefinition = "tinyint(1) default 0")
+	private boolean logos;
 	
 	@Column(name="date_register", nullable = false)
 	private String dateRegister;

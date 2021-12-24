@@ -1,5 +1,6 @@
 package com.cinema.infrastructure.persistence.repository.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,10 +15,14 @@ import org.springframework.stereotype.Service;
 import com.cinema.application.repository.MovieRepository;
 import com.cinema.dominio.entity.Gender;
 import com.cinema.dominio.entity.GenderMovie;
+import com.cinema.dominio.entity.ImageMovie;
 import com.cinema.dominio.entity.Movie;
 import com.cinema.dominio.tmdb.GenderTMDb;
+import com.cinema.dominio.tmdb.ImageMovieTMDb;
+import com.cinema.dominio.tmdb.ImageTMDb;
 import com.cinema.dominio.tmdb.MovieTMDb;
 import com.cinema.infrastructure.exception.CinemaException;
+import com.cinema.infrastructure.persistence.entity.ImageMovieEntity;
 import com.cinema.infrastructure.persistence.entity.MovieEntity;
 import com.cinema.infrastructure.persistence.entity.validate.MovieEntityValidate;
 import com.cinema.infrastructure.persistence.mapper.MovieEntityMapper;
@@ -37,12 +42,13 @@ public class MovieEntityService implements MovieRepository {
 
 	@Value("${cinema.audit.table.movie}")
 	private String CINEMA_AUDIT_TABLE;
-	
+
 	@Value("${tmdb.base.image.original}")
 	private String CINEMA_TMDB_IMAGE_URL;
 
 	private CinemaAudit cinemaAudit;
 	private MovieTMDb movieTMDb;
+	private ImageMovieTMDb imageMovieTMDb;
 
 	private final MovieEntityRepository movieEntityRepository;
 	private final MovieEntityMapper movieEntityMapper;
@@ -52,12 +58,15 @@ public class MovieEntityService implements MovieRepository {
 
 	@Autowired
 	AuditEntityService auditEntityService;
-	
+
 	@Autowired
 	GenderEntityService genderEntityService;
-	
+
 	@Autowired
 	GenderMovieEntityService genderMovieEntityService;
+
+	@Autowired
+	ImageMovieEntityService imageMovieEntityService;
 
 	public MovieEntityService(MovieEntityRepository movieEntityRepository, MovieEntityMapper movieEntityMapper) {
 		this.movieEntityRepository = movieEntityRepository;
@@ -66,7 +75,8 @@ public class MovieEntityService implements MovieRepository {
 
 	@PostConstruct
 	public void init() {
-		this.movieTMDb= null;
+		this.movieTMDb = null;
+		this.imageMovieTMDb = null;
 		this.cinemaAudit = new CinemaAudit(CINEMA_AUDIT_DATABASE, CINEMA_AUDIT_TABLE, null, "pelicula");
 	}
 
@@ -121,6 +131,7 @@ public class MovieEntityService implements MovieRepository {
 			throw new CinemaException("No se ha " + message + " la pelicula.");
 		movie = movieEntityMapper.toDomain(movieEntity);
 		saveToSaveGenders(movie);
+		saveToSaveImage(movie.getId());
 		return movie;
 	}
 
@@ -150,37 +161,64 @@ public class MovieEntityService implements MovieRepository {
 		movie.setName(movieTMDb.getTitle());
 		movie.setDescription(movieTMDb.getOverview());
 		movie.setAverage(movieTMDb.getVoteAverage());
-		movie.setPoster(CINEMA_TMDB_IMAGE_URL+movieTMDb.getPosterPath());
-		movie.setBackdrop(CINEMA_TMDB_IMAGE_URL+movieTMDb.getBackdropPath());
-		if(!registerGender)
+		movie.setPoster(CINEMA_TMDB_IMAGE_URL + movieTMDb.getPosterPath());
+		movie.setBackdrop(CINEMA_TMDB_IMAGE_URL + movieTMDb.getBackdropPath());
+		if (!registerGender)
 			return movie;
 		return movie;
 	}
-	
+
 	private Movie saveToSaveGenders(Movie movie) {
-		if(this.movieTMDb != null && !Cinema.isList(this.movieTMDb.getGenres()))
+		if (this.movieTMDb != null && !Cinema.isList(this.movieTMDb.getGenres()))
 			return movie;
-		for(GenderTMDb gender: this.movieTMDb.getGenres()) {
+		for (GenderTMDb gender : this.movieTMDb.getGenres()) {
 			Long id = Long.parseLong(String.valueOf(gender.getId()));
 			try {
 				genderEntityService.save(new Gender(id, gender.getName()));
-			}catch (CinemaException e) {
+			} catch (CinemaException e) {
 				LOGGER.error("saveToSaveGenders(Movie movie)", e);
-			}finally {
+			} finally {
 				saveToSaveGendersMovie(movie.getId(), id);
 			}
 		}
 		return movie;
 	}
-	
+
 	private GenderMovie saveToSaveGendersMovie(Long idMovie, Long idGender) {
-		GenderMovie genderMovie= null;
+		GenderMovie genderMovie = null;
 		try {
 			genderMovie = genderMovieEntityService.save(new GenderMovie(idMovie, idGender));
-		}catch (CinemaException e) {
+		} catch (CinemaException e) {
 			LOGGER.error("saveToSaveGenders(Movie movie)", e);
 		}
 		return genderMovie;
+	}
+
+	private void saveToSaveImage(Long idMovie) {
+		this.imageMovieTMDb = tmDbMovieService.findImageById(idMovie);
+		if (this.imageMovieTMDb == null)
+			return;
+		saveToSaveImageStructure(new ImageMovie(idMovie, true, false, false), this.imageMovieTMDb.getBackdrops());
+		saveToSaveImageStructure(new ImageMovie(idMovie, false, true, false), this.imageMovieTMDb.getPosters());
+		saveToSaveImageStructure(new ImageMovie(idMovie, false, false, true), this.imageMovieTMDb.getLogos());
+	}
+
+	private List<ImageMovie> saveToSaveImageStructure(ImageMovie imageMovie, List<ImageTMDb> images) {
+		List<ImageMovie> list = new ArrayList<>();
+		if (!Cinema.isList(images))
+			return list;
+		for (ImageTMDb image : images) {
+			imageMovie.setPath(CINEMA_TMDB_IMAGE_URL + image.getPath());
+			try {
+				list.add(imageMovieEntityService.save(imageMovie));
+			} catch (CinemaException e) {
+				LOGGER.error("saveToSaveImageStructure(ImageMovieEntity imageMovieEntity, List<ImageTMDb> images)", e);
+			} finally {
+				imageMovie = new ImageMovie(imageMovie.getIdMovie(), imageMovie.isBackdrops(), imageMovie.isLogos(),
+						imageMovie.isPosters());
+			}
+		}
+		return list;
 	}
 
 	private boolean testId(Long id) {

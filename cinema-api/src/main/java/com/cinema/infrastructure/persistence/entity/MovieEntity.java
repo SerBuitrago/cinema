@@ -52,7 +52,7 @@ public class MovieEntity {
 	private String dateUpdate;
 
 	@OneToMany(mappedBy = "idMovie")
-	private List<ImageEntity> images;
+	private List<ImageMovieEntity> images;
 
 	@Transient
 	private MovieTMDb movieTMDb;
