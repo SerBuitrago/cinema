@@ -19,7 +19,8 @@ cinema:
       audit: audit
       movie: movie
       serie: serie
-      gender: gender   
+      gender: gender
+      server: server   
 tmdb:
   base:
     url: https://api.themoviedb.org/3/

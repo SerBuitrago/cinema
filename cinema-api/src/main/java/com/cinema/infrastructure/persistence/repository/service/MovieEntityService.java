@@ -22,7 +22,6 @@ import com.cinema.dominio.tmdb.ImageMovieTMDb;
 import com.cinema.dominio.tmdb.ImageTMDb;
 import com.cinema.dominio.tmdb.MovieTMDb;
 import com.cinema.infrastructure.exception.CinemaException;
-import com.cinema.infrastructure.persistence.entity.ImageMovieEntity;
 import com.cinema.infrastructure.persistence.entity.MovieEntity;
 import com.cinema.infrastructure.persistence.entity.validate.MovieEntityValidate;
 import com.cinema.infrastructure.persistence.mapper.MovieEntityMapper;

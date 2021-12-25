@@ -85,4 +85,5 @@ public class MovieTMDb {
     
     @JsonProperty("rating")
     private float userRating;
+
 }
