@@ -29,6 +29,12 @@ public class ServerMovieEntity {
 	@Column(name = "id_movie", nullable = false)
 	private Long idMovie;
 	
+	@Column(name = "path", nullable = false,  length = 800)
+	private String path;
+	
+	@Column(name = "time", nullable = false,  length = 800)
+	private String time;
+	
 	@Column(name = "statu", nullable = false, columnDefinition = "tinyint(1) default 1")
 	private boolean statu;
 
