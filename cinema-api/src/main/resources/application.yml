@@ -22,7 +22,8 @@ cinema:
       movie: movie
       serie: serie
       gender: gender
-      server: server   
+      server: server
+      serverMovie: "server movie"  
 tmdb:
   base:
     url: https://api.themoviedb.org/3/
