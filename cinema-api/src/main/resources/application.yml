@@ -13,6 +13,8 @@ spring:
     username: root
     password: 
 cinema:
+  swagger:
+    controller: com.cinema.infrastructure.rest
   audit:
     database: cinema
     table:
