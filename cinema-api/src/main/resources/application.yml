@@ -13,6 +13,8 @@ spring:
     username: root
     password: 
 cinema:
+  swagger:
+    controller: com.cinema.infrastructure.rest
   audit:
     database: cinema
     table:
@@ -20,7 +22,8 @@ cinema:
       movie: movie
       serie: serie
       gender: gender
-      server: server   
+      server: server
+      serverMovie: "server movie"  
 tmdb:
   base:
     url: https://api.themoviedb.org/3/
