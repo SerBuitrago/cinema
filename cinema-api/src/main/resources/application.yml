@@ -40,5 +40,16 @@ tmdb:
         url: "{baseUrl}movie/{id}?api_key={tmdbBaseKey}&{language}"
       image:
         url: "{baseUrl}movie/{id}/images?api_key={tmdbBaseKey}&{language}"
+    serie:
+      id:
+        url: "{baseUrl}tv/{id}?api_key={tmdbBaseKey}&{language}"
+      seanson: 
+        url: "{baseUrl}tv/{id}/season/{number}?api_key={tmdbBaseKey}&{language}"
+      changes:
+        url: "{baseUrl}tv/{id}/changes?api_key={tmdbBaseKey}&{language}"
+      image: 
+        url: "{baseUrl}tv/{id}/season/{number}/images?api_key={tmdbBaseKey}&{language}"
+      video:
+        url: "{baseUrl}tv/{id}/season/{number}/videos?api_key={tmdbBaseKey}&{language}"
     genre:
       url: "{baseUrl}genre/movie/list?api_key={tmdbBaseKey}&{language}" 
