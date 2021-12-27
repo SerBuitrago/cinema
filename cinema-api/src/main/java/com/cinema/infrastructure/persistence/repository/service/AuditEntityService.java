@@ -38,6 +38,66 @@ public class AuditEntityService implements AuditRepository {
 	public List<Audit> findAll() {
 		return auditEntityMapper.toDomainList(auditEntityRepository.findAll());
 	}
+	
+	@Override
+	public List<Audit> findByIdUserAll(Long idUser) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Audit> findByTableAll(String table) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Audit> findByDBAll(String db) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Audit> findByActionAll(String action) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Audit> findByIpPublicAll(String ipPublic) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Audit> findByIpLocalAll(String ipLocal) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Audit> findByDBAndTableAll(String db, String table) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Audit> findByDBAndTableAndUserAll(String db, String table, Long idUser) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Audit> findByDBAndTableAndActionAll(String db, String table, String action) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Audit> findByDBAndTableAndActionAndUserAll(String db, String table, String action, Long idUser) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public List<Audit> findByStatuAll(boolean statu) {

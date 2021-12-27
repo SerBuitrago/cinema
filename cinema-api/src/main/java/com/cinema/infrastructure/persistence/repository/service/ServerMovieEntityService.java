@@ -40,6 +40,9 @@ public class ServerMovieEntityService implements ServerMovieRepository {
 
 	@Autowired
 	AuditEntityService auditEntityService;
+	
+	@Autowired
+	ServerEntityService serverEntityService;
 
 	public ServerMovieEntityService(ServerMovieEntityRepository serverMovieEntityRepository,
 			ServerMovieEntityMapper serverMovieEntityMapper) {
@@ -134,9 +137,10 @@ public class ServerMovieEntityService implements ServerMovieRepository {
 	}
 
 	private ServerMovie saveToSave(ServerMovie serverMovie, int type) {
-		if (!testMovieServer(serverMovie.getIdMovie(), serverMovie.getIdServer()))
+		if (!testMovieServer(serverMovie.getIdMovie(), serverMovie.getServer().getId()))
 			throw new CinemaException("La pelicula con el id " + serverMovie.getIdMovie()
-					+ " ya tiene asociado el servidor con el id " + serverMovie.getIdServer() + ".");
+					+ " ya tiene asociado el servidor con el id " + serverMovie.getServer().getId() + ".");
+		serverEntityService.findById(serverMovie.getServer().getId());
 		CinemaDate date = new CinemaDate();
 		serverMovie.setId(0L);
 		serverMovie.setDateRegister(date.currentToDateTime(null));
@@ -151,9 +155,9 @@ public class ServerMovieEntityService implements ServerMovieRepository {
 			aux = findById(serverMovie.getId());
 		Long idMovie = (type != 3 ? aux.getIdMovie() : serverMovie.getIdMovie());
 		if (serverMovie.getIdMovie() != idMovie) {
-			if (!testMovieServer(serverMovie.getIdMovie(), serverMovie.getIdServer()))
+			if (!testMovieServer(serverMovie.getIdMovie(), serverMovie.getServer().getId()))
 				throw new CinemaException("La pelicula con el id " + serverMovie.getIdMovie()
-						+ " ya tiene asociado el servidor con el id " + serverMovie.getIdServer() + ".");
+						+ " ya tiene asociado el servidor con el id " + serverMovie.getServer().getId() + ".");
 		}
 		CinemaDate date = new CinemaDate();
 		serverMovie.setDateRegister(type != 3 ? aux.getDateRegister() : serverMovie.getDateRegister());

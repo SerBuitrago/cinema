@@ -9,7 +9,9 @@ public class ServerMovieEntityValidate {
 	public static void validate(ServerMovie serverMovie) {
 		if (serverMovie == null)
 			throw new CinemaException("No se ha podido validar el servidor de la pelicula.");
-		if(!Cinema.isLong(serverMovie.getIdServer()))
+		if(serverMovie.getServer() == null)
+			throw new CinemaException("No se ha podido validar el servidor.");
+		if(!Cinema.isLong(serverMovie.getServer().getId()))
 			throw new CinemaException("El id del servidor no es valido.");
 		if(!Cinema.isLong(serverMovie.getIdMovie()))
 			throw new CinemaException("El id de la pelicula no es valida.");

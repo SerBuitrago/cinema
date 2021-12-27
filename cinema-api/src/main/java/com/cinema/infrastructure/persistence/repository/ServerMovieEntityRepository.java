@@ -12,7 +12,7 @@ import com.cinema.infrastructure.persistence.entity.ServerMovieEntity;
 @Repository
 public interface ServerMovieEntityRepository extends JpaRepository<ServerMovieEntity, Long>{
 	
-	@Query(nativeQuery = false, value = "SELECT sm FROM ServerMovieEntity sm WHERE sm.idServer = :idServer AND sm.idMovie = :idMovie")
+	@Query(nativeQuery = false, value = "SELECT sm FROM ServerMovieEntity sm WHERE sm.server.id = :idServer AND sm.idMovie = :idMovie")
 	ServerMovieEntity findByMovieAndServer(@Param("idServer") Long idServer, @Param("idMovie") Long idMovie);
 
 	List<ServerMovieEntity> findByStatu(boolean statu);
@@ -20,7 +20,7 @@ public interface ServerMovieEntityRepository extends JpaRepository<ServerMovieEn
 	@Query(nativeQuery = false, value = "SELECT sm FROM ServerMovieEntity sm WHERE sm.idMovie = :idMovie")
 	List<ServerMovieEntity> findByMovieAll(@Param("idMovie") Long idMovie);
 	
-	@Query(nativeQuery = false, value = "SELECT sm FROM ServerMovieEntity sm WHERE sm.idServer = :idServer")
+	@Query(nativeQuery = false, value = "SELECT sm FROM ServerMovieEntity sm WHERE sm.server.id = :idServer")
 	List<ServerMovieEntity> findByServerAll(@Param("idServer") Long idServer);
 	
 	@Query(nativeQuery = false, value = "SELECT sm FROM ServerMovieEntity sm WHERE sm.dateRegister BETWEEN :start AND :end ORDER BY sm.dateRegister")
