@@ -41,6 +41,7 @@ tmdb:
       image:
         url: "{baseUrl}movie/{id}/images?api_key={tmdbBaseKey}&{language}"
     serie:
+      url: "{baseUrl}search/tv?api_key={tmdbBaseKey}&{language}&query={query}"
       id:
         url: "{baseUrl}tv/{id}?api_key={tmdbBaseKey}&{language}"
       seanson: 
